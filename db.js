@@ -1,13 +1,13 @@
-const { Pool } = require('pg');
-const { PrismaPg } = require('@prisma/adapter-pg');
 const { PrismaClient } = require('@prisma/client');
-const dotenv = require('dotenv');
 
-dotenv.config();
+// Initialize Prisma Client with the DATABASE_URL from .env
+const prisma = new PrismaClient({
+    datasourceUrl: process.env.DATABASE_URL,
+    log: ['error', 'warn']
+});
 
-const connectionString = process.env.DATABASE_URL || "postgresql://postgres:postgres@localhost:5432/pro_psych_portal?schema=public";
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+if (!process.env.DATABASE_URL) {
+    console.warn('WARNING: DATABASE_URL not found in environment variables. Prisma will look for it in the schema.');
+}
 
 module.exports = prisma;
