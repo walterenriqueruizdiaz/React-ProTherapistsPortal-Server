@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Auth / Professional
+model Professional {
+  id                      String        @id @default(uuid())
+  userId                  String        @unique // Google Subject / User ID
+  email                   String        @unique // Captured from Google Auth
+  dni                     String?       @unique
+  firstName               String?
+  lastName                String?
+  professionalLicenseNumber String?
+  createdAt               DateTime      @default(now())
+  updatedAt               DateTime      @updatedAt
+
+  appointments            Appointment[]
+  sessions                Session[]
+}
+
+// Patient
+model Patient {
+  id          String   @id @default(uuid())
+  dni         String   @unique
+  firstName   String
+  lastName    String
+  birthDate   DateTime
+  mobilePhone String
+  email       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  familyContacts FamilyContact[]
+  appointments   Appointment[]
+  sessions       Session[]
+}
+
+// Family / Contacts
+model FamilyContact {
+  id                    String  @id @default(uuid())
+  patientId             String
+  relationshipToPatient String
+  firstName             String
+  lastName              String
+  mobilePhone           String?
+  email                 String?
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+}
+
+// Appointment
+enum AppointmentStatus {
+  RESERVADO
+  CONFIRMADO
+  NO_SHOW
+  CANCELADO
+}
+
+enum Recurrence {
+  NONE
+  WEEKLY
+  MONTHLY
+}
+
+model Appointment {
+  id             String            @id @default(uuid())
+  professionalId String
+  patientId      String
+  dateTime       DateTime
+  status         AppointmentStatus @default(RESERVADO)
+  recurrence     Recurrence        @default(NONE)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  professional Professional @relation(fields: [professionalId], references: [id])
+  patient      Patient      @relation(fields: [patientId], references: [id])
+  session      Session?
+}
+
+// Session
+enum SessionType {
+  EVALUATION
+  INTERVENTION
+  PARENTS_MEETING
+}
+
+model Session {
+  id             String      @id @default(uuid())
+  appointmentId  String      @unique
+  professionalId String
+  patientId      String
+  date           DateTime // Stored separately for easier querying if needed, or derived
+  time           DateTime // Could be just one DateTime field, but separating might be useful for legacy reasons or specific queries. Let's stick to DateTime.
+  sessionType    SessionType
+  notes          String      @db.Text
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  appointment  Appointment  @relation(fields: [appointmentId], references: [id])
+  professional Professional @relation(fields: [professionalId], references: [id])
+  patient      Patient      @relation(fields: [patientId], references: [id])
+}
