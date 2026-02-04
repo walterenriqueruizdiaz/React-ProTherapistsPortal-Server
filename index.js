@@ -19,6 +19,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+if (!process.env.DATABASE_URL) {
+    console.error('CRITICAL ERROR: DATABASE_URL environment variable is not set.');
+}
+
 const pgPool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
@@ -103,8 +107,8 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal Server Error' });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT} (bound to 0.0.0.0)`);
     // Keep alive log
     setInterval(() => {
         console.log(`${new Date().toISOString()} - Server is still running on port ${PORT}`);
