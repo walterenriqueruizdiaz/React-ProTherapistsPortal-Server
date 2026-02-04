@@ -6,11 +6,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 // Auth / Professional
 model Professional {
   id                      String        @id @default(uuid())
   userId                  String        @unique // Google Subject / User ID
   email                   String        @unique // Captured from Google Auth
+  isActive                Boolean       @default(true)
+  role                    Role          @default(USER)
   dni                     String?       @unique
   firstName               String?
   lastName                String?

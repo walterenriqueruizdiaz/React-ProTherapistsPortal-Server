@@ -57,6 +57,7 @@ const professionalRoutes = require('./routes/professionals');
 const patientRoutes = require('./routes/patients');
 const appointmentRoutes = require('./routes/appointments');
 const sessionRoutes = require('./routes/sessions');
+const adminRoutes = require('./routes/admin');
 
 // Passport Middleware
 app.use(passport.initialize());
@@ -96,6 +97,7 @@ app.use('/api/appointments', appointmentRoutes);
 // No, keep separation.
 // Let's just mount it at `/api` and have `sessions.js` define full paths.
 app.use('/api', sessionRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
     res.send('Pro Therapists Portal API is running');

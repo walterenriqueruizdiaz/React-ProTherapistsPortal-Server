@@ -82,6 +82,10 @@ passport.use(new GoogleStrategy({
                 }
             }
 
+            if (!professional.isActive) {
+                return done(null, false, { message: 'Tu cuenta ha sido desactivada. Contacta al administrador.' });
+            }
+
             return done(null, professional);
         } catch (err) {
             return done(err, null);
