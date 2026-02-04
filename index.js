@@ -105,8 +105,12 @@ app.get('/', (req, res) => {
 
 // Error handling
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error('SERVER ERROR:', err);
+    res.status(500).json({
+        message: 'Internal Server Error',
+        details: err.message,
+        stack: process.env.NODE_ENV === 'production' ? null : err.stack
+    });
 });
 
 app.listen(PORT, '0.0.0.0', () => {
