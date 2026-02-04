@@ -98,7 +98,7 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api', sessionRoutes);
 
 app.get('/', (req, res) => {
-    res.send('Pro Psych Portal API is running');
+    res.send('Pro Therapists Portal API is running');
 });
 
 // Error handling
