@@ -41,8 +41,10 @@ passport.use(new GoogleStrategy({
 },
     async (req, accessToken, refreshToken, profile, done) => {
         try {
+            console.log('Google Auth strategy triggered for profile:', profile.id);
             const googleId = profile.id;
-            const email = profile.emails[0].value;
+            const email = profile.emails?.[0]?.value;
+            console.log('Attempting login/creation for email:', email);
             const firstName = profile.name.givenName;
             const lastName = profile.name.familyName;
 

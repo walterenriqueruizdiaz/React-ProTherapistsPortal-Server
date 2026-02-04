@@ -116,6 +116,8 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT} (bound to 0.0.0.0)`);
+    console.log(`BACKEND_URL configured as: ${process.env.BACKEND_URL}`);
+    console.log(`CLIENT_URL configured as: ${process.env.CLIENT_URL}`);
     // Keep alive log
     setInterval(() => {
         console.log(`${new Date().toISOString()} - Server is still running on port ${PORT}`);
