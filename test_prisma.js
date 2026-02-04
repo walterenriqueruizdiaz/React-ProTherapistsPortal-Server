@@ -1,23 +1,18 @@
-const prisma = require('./db');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-async function test() {
+async function main() {
     try {
-        console.log("Testing patient creation...");
-        const res = await prisma.patient.create({
-            data: {
-                dni: "test-" + Date.now(),
-                firstName: "Test",
-                lastName: "Patient",
-                birthDate: new Date("1990-01-01"),
-                mobilePhone: "123456789"
-            }
-        });
-        console.log("Success:", res);
-        process.exit(0);
+        console.log('Testing Prisma connection...');
+        const professionals = await prisma.professional.findMany();
+        console.log('SUCCESS: Found', professionals.length, 'professionals');
     } catch (err) {
-        console.error("Error:", err);
-        process.exit(1);
+        console.error('DATABASE ERROR:', err);
+        if (err.code) console.log('Error Code:', err.code);
+        if (err.meta) console.log('Error Meta:', err.meta);
+    } finally {
+        await prisma.$disconnect();
     }
 }
 
-test();
+main();
