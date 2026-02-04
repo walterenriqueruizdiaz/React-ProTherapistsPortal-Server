@@ -7,6 +7,6 @@ export default defineConfig({
         path: "prisma/migrations",
     },
     datasource: {
-        url: "postgresql://postgres:postgres@localhost:5432/pro_psych_portal?schema=public",
+        url: process.env.DATABASE_URL,
     },
 });
