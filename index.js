@@ -44,8 +44,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        secure: true, // Required for sameSite: 'none'
         httpOnly: true,
+        sameSite: 'none', // Allow cross-domain cookies (localhost to railway)
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
