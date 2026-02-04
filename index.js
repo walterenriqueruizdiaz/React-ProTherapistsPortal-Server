@@ -43,10 +43,11 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback-secret-key',
     resave: false,
     saveUninitialized: false,
+    proxy: true, // Required for secure cookies behind reverse proxy
     cookie: {
-        secure: true, // Required for sameSite: 'none'
+        secure: true, // Required for sameSite: 'none' and Railway proxy
         httpOnly: true,
-        sameSite: 'none', // Allow cross-domain cookies (localhost to railway)
+        sameSite: 'none',
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
@@ -67,7 +68,8 @@ app.use(passport.session());
 
 // Logging middleware
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.url} - Auth: ${req.isAuthenticated()}`);
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url} - Auth: ${req.isAuthenticated()} - SessionID: ${req.sessionID}`);
+    if (req.user) console.log('Current User ID:', req.user.id);
     next();
 });
 
