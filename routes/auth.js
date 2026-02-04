@@ -10,17 +10,27 @@ router.get('/google',
 );
 
 router.get('/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login/failed' }),
-    (req, res) => {
-        // Successful authentication
-        // Check if profile is complete. 
-        // DNI and License are required.
-        const user = req.user;
-        if (!user.dni || !user.professionalLicenseNumber) {
-            res.redirect(`${CLIENT_URL}/complete-profile`);
-        } else {
-            res.redirect(`${CLIENT_URL}/dashboard`);
-        }
+    (req, res, next) => {
+        passport.authenticate('google', (err, user, info) => {
+            if (err) {
+                console.error('OAUTH AUTHENTICATION ERROR:', err);
+                return res.status(500).json({ message: 'Auth Error', details: err.message, info });
+            }
+            if (!user) {
+                console.warn('OAUTH LOGIN FAILED:', info);
+                return res.status(401).json({ message: 'Login failed', details: info?.message || 'Bad Request' });
+            }
+            req.logIn(user, (loginErr) => {
+                if (loginErr) return next(loginErr);
+
+                // Successful authentication logic
+                if (!user.dni || !user.professionalLicenseNumber) {
+                    return res.redirect(`${CLIENT_URL}/complete-profile`);
+                } else {
+                    return res.redirect(`${CLIENT_URL}/dashboard`);
+                }
+            });
+        })(req, res, next);
     }
 );
 

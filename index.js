@@ -17,6 +17,7 @@ process.on('uncaughtException', (err) => {
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy for secure cookies on Railway
 const PORT = process.env.PORT || 3000;
 
 if (!process.env.DATABASE_URL) {
