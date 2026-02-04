@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
+const { Pool } = require('pg');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const fs = require('fs');
@@ -17,6 +19,10 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const pgPool = new Pool({
+    connectionString: process.env.DATABASE_URL
+});
+
 // Middleware
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
@@ -25,6 +31,10 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 app.use(session({
+    store: new pgSession({
+        pool: pgPool,
+        tableName: 'session'
+    }),
     secret: process.env.SESSION_SECRET || 'fallback-secret-key',
     resave: false,
     saveUninitialized: false,
