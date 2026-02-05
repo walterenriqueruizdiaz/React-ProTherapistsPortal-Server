@@ -123,8 +123,19 @@ router.delete('/:id', ensureAuthenticated, async (req, res) => {
     }
 });
 
-// Contacts sub-routes could be here or separate. 
-// "api/patients/:id/contacts"
+// GET /api/patients/:id/contacts - List contacts for a patient
+router.get('/:id/contacts', ensureAuthenticated, async (req, res) => {
+    try {
+        const contacts = await prisma.familyContact.findMany({
+            where: { patientId: req.params.id }
+        });
+        res.json(contacts);
+    } catch (err) {
+        res.status(500).json({ error: 'Error fetching contacts' });
+    }
+});
+
+// POST /api/patients/:id/contacts - Create contact
 router.post('/:id/contacts', ensureAuthenticated, async (req, res) => {
     try {
         const { firstName, lastName, relationshipToPatient, mobilePhone, email } = req.body;
@@ -137,6 +148,32 @@ router.post('/:id/contacts', ensureAuthenticated, async (req, res) => {
         res.json(contact);
     } catch (err) {
         res.status(500).json({ error: 'Error creating contact' });
+    }
+});
+
+// PUT /api/patients/contacts/:contactId - Update contact
+router.put('/contacts/:contactId', ensureAuthenticated, async (req, res) => {
+    try {
+        const { firstName, lastName, relationshipToPatient, mobilePhone, email } = req.body;
+        const updated = await prisma.familyContact.update({
+            where: { id: req.params.contactId },
+            data: { firstName, lastName, relationshipToPatient, mobilePhone, email }
+        });
+        res.json(updated);
+    } catch (err) {
+        res.status(500).json({ error: 'Error updating contact' });
+    }
+});
+
+// DELETE /api/patients/contacts/:contactId - Delete contact
+router.delete('/contacts/:contactId', ensureAuthenticated, async (req, res) => {
+    try {
+        await prisma.familyContact.delete({
+            where: { id: req.params.contactId }
+        });
+        res.json({ message: 'Contact deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error deleting contact' });
     }
 });
 
