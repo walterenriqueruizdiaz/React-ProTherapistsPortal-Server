@@ -108,6 +108,10 @@ app.use('/api/admin', adminRoutes);
 //     res.send('Pro Therapists Portal API is running');
 // });
 
+// Serve static files from 'public' and 'assets'
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
