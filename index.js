@@ -103,9 +103,17 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api', sessionRoutes);
 app.use('/api/admin', adminRoutes);
 
+// app.get('/', (req, res) => {
+//     res.send('Pro Therapists Portal API is running');
+// });
+
 app.get('/', (req, res) => {
-    res.send('Pro Therapists Portal API is running');
+    res.sendFile(path.join(__dirname, 'public/index.html'));
 });
+
+// app.use('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public/index.html'));
+// });
 
 // Error handling
 app.use((err, req, res, next) => {

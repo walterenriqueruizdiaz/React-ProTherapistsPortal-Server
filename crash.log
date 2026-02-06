@@ -1,12 +1,11 @@
-PrismaClientConstructorValidationError: Unknown property datasourceUrl provided to PrismaClient constructor.
-Read more at https://pris.ly/d/client-constructor
-    at yl (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\@prisma\client\runtime\client.js:66:3832)
-    at new t (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\@prisma\client\runtime\client.js:70:1241)
-    at Object.<anonymous> (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\db.js:4:16)
-    at Module._compile (node:internal/modules/cjs/loader:1761:14)
-    at Object..js (node:internal/modules/cjs/loader:1893:10)
-    at Module.load (node:internal/modules/cjs/loader:1481:32)
-    at Module._load (node:internal/modules/cjs/loader:1300:12)
-    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
-    at Module.require (node:internal/modules/cjs/loader:1504:12)
+TypeError: Missing parameter name at index 1: *; visit https://git.new/pathToRegexpError for info
+    at name (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\path-to-regexp\dist\index.js:96:19)
+    at parse (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\path-to-regexp\dist\index.js:113:68)
+    at pathToRegexp (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\path-to-regexp\dist\index.js:267:58)
+    at Object.match (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\path-to-regexp\dist\index.js:237:30)
+    at matcher (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\router\lib\layer.js:86:23)
+    at new Layer (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\router\lib\layer.js:93:62)
+    at router.use (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\router\index.js:398:19)
+    at app.<anonymous> (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\express\lib\application.js:222:21)
+    at Array.forEach (<anonymous>)
+    at app.use (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\express\lib\application.js:219:7)
