@@ -3,7 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 
 // Logic to determine redirect
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+const CLIENT_URL = process.env.CLIENT_URL;
 
 router.get('/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
