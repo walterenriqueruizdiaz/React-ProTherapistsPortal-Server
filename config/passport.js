@@ -33,7 +33,11 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-const callbackURL = process.env.OAUTH_CALLBACK_URL || (process.env.BACKEND_URL ? `${process.env.BACKEND_URL}/api/auth/google/callback` : 'http://localhost:3000/api/auth/google/callback');
+// Normalize BACKEND_URL to avoid double /api
+const rawBackendUrl = process.env.BACKEND_URL || 'http://localhost:3000';
+const cleanBackendUrl = rawBackendUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '');
+
+const callbackURL = process.env.OAUTH_CALLBACK_URL || `${cleanBackendUrl}/api/auth/google/callback`;
 console.log('Passport Google Strategy configured with callbackURL:', callbackURL);
 
 passport.use(new GoogleStrategy({
