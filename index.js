@@ -116,9 +116,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-// app.use('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public/index.html'));
-// });
+// Catch-all route for SPA support
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 // Error handling
 app.use((err, req, res, next) => {
