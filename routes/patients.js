@@ -11,7 +11,9 @@ const ensureAuthenticated = (req, res, next) => {
 router.get('/', ensureAuthenticated, async (req, res) => {
     try {
         const { search } = req.query;
-        const where = {};
+        const where = {
+            professionalId: req.user.id
+        };
 
         if (search) {
             where.OR = [
@@ -70,7 +72,8 @@ router.post('/', ensureAuthenticated, async (req, res) => {
                 lastName,
                 birthDate: new Date(birthDate),
                 mobilePhone,
-                email
+                email,
+                professionalId: req.user.id
             }
         });
         console.log("POST /api/patients - Success:", newPatient.id);

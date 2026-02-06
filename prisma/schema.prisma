@@ -27,6 +27,7 @@ model Professional {
 
   appointments            Appointment[]
   sessions                Session[]
+  patients                Patient[]
 }
 
 // Patient
@@ -40,6 +41,9 @@ model Patient {
   email       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  professionalId String? // Optional for now to support legacy data
+  professional   Professional? @relation(fields: [professionalId], references: [id])
 
   familyContacts FamilyContact[]
   appointments   Appointment[]
