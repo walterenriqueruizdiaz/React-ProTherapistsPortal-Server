@@ -128,8 +128,8 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-// Catch-all route for SPA support
-app.get('*', (req, res) => {
+// Catch-all route for SPA support (Regex used for Express 5 compatibility)
+app.get(/.*/, (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
