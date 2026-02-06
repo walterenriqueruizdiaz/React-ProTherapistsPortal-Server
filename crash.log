@@ -8,4 +8,4 @@ TypeError: Missing parameter name at index 1: *; visit https://git.new/pathToReg
     at router.route (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\router\index.js:428:17)
     at app.route (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\express\lib\application.js:257:22)
     at app.<computed> [as get] (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\node_modules\express\lib\application.js:478:22)
-    at Object.<anonymous> (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\index.js:120:5)
+    at Object.<anonymous> (C:\Users\werd2\.gemini\antigravity\scratch\pro-psych-portal\server\index.js:132:5)

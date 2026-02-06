@@ -11,25 +11,33 @@ const fs = require('fs');
 
 // Log unhandled errors
 process.on('uncaughtException', (err) => {
-    fs.writeFileSync('crash.log', err.stack || err.toString());
+    console.error('CRITICAL: Uncaught Exception:', err);
+    try {
+        fs.writeFileSync('crash.log', err.stack || err.toString());
+    } catch (e) {
+        console.error('Failed to write crash.log:', e);
+    }
     process.exit(1);
 });
 
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('CRITICAL: Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 dotenv.config();
+console.log('Environment variables loaded');
 
 const app = express();
-app.set('trust proxy', 1); // Trust first proxy for secure cookies on Railway
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
-if (!process.env.DATABASE_URL) {
-    console.error('CRITICAL ERROR: DATABASE_URL environment variable is not set.');
-}
-
+console.log('Initializing database connection pool...');
 const pgPool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
 
 // Middleware
+console.log('Setting up middleware...');
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true
@@ -44,9 +52,9 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'fallback-secret-key',
     resave: false,
     saveUninitialized: false,
-    proxy: true, // Required for secure cookies behind reverse proxy
+    proxy: true,
     cookie: {
-        secure: true, // Required for sameSite: 'none' and Railway proxy
+        secure: true,
         httpOnly: true,
         sameSite: 'none',
         maxAge: 24 * 60 * 60 * 1000
@@ -54,14 +62,18 @@ app.use(session({
 }));
 
 // Passport Config
+console.log('Loading Passport configuration...');
 require('./config/passport');
+console.log('Passport configuration loaded.');
 
+console.log('Loading routes...');
 const authRoutes = require('./routes/auth');
 const professionalRoutes = require('./routes/professionals');
 const patientRoutes = require('./routes/patients');
 const appointmentRoutes = require('./routes/appointments');
 const sessionRoutes = require('./routes/sessions');
 const adminRoutes = require('./routes/admin');
+console.log('Routes loaded.');
 
 // Passport Middleware
 app.use(passport.initialize());
