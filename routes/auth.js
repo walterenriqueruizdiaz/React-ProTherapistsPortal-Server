@@ -24,10 +24,12 @@ router.get('/google/callback',
                 if (loginErr) return next(loginErr);
 
                 // Successful authentication logic
-                if (!user.dni || !user.professionalLicenseNumber) {
-                    return res.redirect(`${CLIENT_URL}/complete-profile`);
+                const redirectPath = !user.dni || !user.professionalLicenseNumber ? '/complete-profile' : '/dashboard';
+
+                if (process.env.CLIENT_URL) {
+                    return res.redirect(`${process.env.CLIENT_URL}${redirectPath}`);
                 } else {
-                    return res.redirect(`${CLIENT_URL}/dashboard`);
+                    return res.redirect(redirectPath);
                 }
             });
         })(req, res, next);
